@@ -47,3 +47,15 @@ export async function GET() {
     return NextResponse.json({ error: 'Erro interno ao buscar links' }, { status: 500 });
   }
 }
+
+export async function DELETE(request) {
+  try {
+    const { id } = await request.json();
+    if (!id) return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+    
+    await prisma.link.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Erro ao deletar' }, { status: 500 });
+  }
+}

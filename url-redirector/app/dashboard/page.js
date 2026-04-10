@@ -46,6 +46,7 @@ export default function Dashboard() {
                   <th>URL de Destino Original</th>
                   <th>Cliques Contabilizados</th>
                   <th>Atalho</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +71,30 @@ export default function Dashboard() {
                         <span className="badge">🔥 {link.clicks} clicks</span>
                       </td>
                       <td>
-                        <a href={shortLink} target="_blank" rel="noopener noreferrer">Testar Acesso</a>
+                        <a href={shortLink} target="_blank" rel="noopener noreferrer">Testar</a>
+                      </td>
+                      <td style={{ display: 'flex', gap: '8px' }}>
+                        <button 
+                          onClick={(e) => {
+                            navigator.clipboard.writeText(shortLink);
+                            e.target.innerText = 'Copiado! ✓'; 
+                            setTimeout(() => e.target.innerText = 'Copiar', 2000);
+                          }}
+                          style={{ padding: '6px 10px', fontSize: '0.75rem', width: 'auto', margin: '0' }}
+                        >
+                          Copiar
+                        </button>
+                        <button 
+                          onClick={async () => {
+                            if (confirm('Deletar este link para sempre?')) {
+                              fetch('/api/links', { method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({id: link.id}) })
+                                .then(() => setLinks(links.filter(l => l.id !== link.id)));
+                            }
+                          }}
+                          style={{ padding: '6px 10px', fontSize: '0.75rem', width: 'auto', margin: '0', background: 'rgba(248, 81, 73, 0.2)', color: 'var(--error)', border: '1px solid rgba(248, 81, 73, 0.4)' }}
+                        >
+                          Lixeira
+                        </button>
                       </td>
                     </tr>
                   )
