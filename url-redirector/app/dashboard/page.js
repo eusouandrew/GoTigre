@@ -77,8 +77,9 @@ export default function Dashboard() {
                         <button 
                           onClick={(e) => {
                             navigator.clipboard.writeText(shortLink);
+                            const oldText = e.target.innerText;
                             e.target.innerText = 'Copiado! ✓'; 
-                            setTimeout(() => e.target.innerText = 'Copiar', 2000);
+                            setTimeout(() => e.target.innerText = oldText, 2000);
                           }}
                           style={{ padding: '6px 10px', fontSize: '0.75rem', width: 'auto', margin: '0' }}
                         >
