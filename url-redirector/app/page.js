@@ -32,7 +32,8 @@ export default function Home() {
       const domain = typeof window !== 'undefined' ? window.location.origin : '';
       setStatus({ 
         type: 'success', 
-        text: `Link criado! Copie seu link: ${domain}/${finalSlug}` 
+        text: 'Redirecionamento gerado com sucesso!',
+        link: `${domain}/${finalSlug}`
       });
       setSlugText('');
       setUrl('');
@@ -88,8 +89,30 @@ export default function Home() {
         </form>
 
         {status && (
-          <div className={`message ${status.type}`}>
-            {status.text}
+          <div className={`message ${status.type}`} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div>{status.text}</div>
+            {status.link && (
+              <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={status.link} 
+                  style={{ flex: 1, padding: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: '6px', fontSize: '0.9rem' }}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    navigator.clipboard.writeText(status.link);
+                    const btn = document.getElementById('copyBtn');
+                    if(btn) { btn.innerText = 'Copiado! ✓'; setTimeout(() => btn.innerText = 'Copiar Link', 2500); }
+                  }}
+                  id="copyBtn"
+                  style={{ width: 'auto', padding: '10px 16px', margin: '0', background: 'rgba(46, 160, 67, 0.2)', color: 'var(--success)', border: '1px solid rgba(46, 160, 67, 0.4)' }}
+                >
+                  Copiar Link
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
